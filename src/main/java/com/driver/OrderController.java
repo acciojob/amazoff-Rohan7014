@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("orders")
+@RequestMapping("/orders")
 public class OrderController {
     
     @Autowired
@@ -35,13 +35,9 @@ public class OrderController {
 
     @PutMapping("/add-order-partner-pair")
     public ResponseEntity<String> addOrderPartnerPair(@RequestParam String orderId, @RequestParam String partnerId){
-        try{
             orderService.addOrderPartnerPair(orderId,partnerId);
             //This is basically assigning that order to that partnerId
             return new ResponseEntity<>("New order-partner pair added successfully", HttpStatus.CREATED);
-        }catch (RuntimeException ex){
-            return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
-        }
     }
 
     @GetMapping("/get-order-by-id/{orderId}")

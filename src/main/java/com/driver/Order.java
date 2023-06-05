@@ -27,9 +27,9 @@ public class Order {
     }
 
     public int getDeliveryTime() {return deliveryTime;}
-    public String getDeliveryTimeAsString(){
-        return TimeUtils.convertTime(this.deliveryTime);
-    }
+//    public String getDeliveryTimeAsString(){
+//        return TimeUtils.convertTime(this.deliveryTime);
+//    }
 
     public void setId(String id) {
         this.id = id;

@@ -22,19 +22,15 @@ public class OrderService {
         orderRepository.addPartner(partner);
     }
 
-    public void addOrderPartnerPair(String orderId, String partnerId) throws RuntimeException{
-        Optional<Order> orderOpt=orderRepository.getOrderById(orderId);
-        Optional<DeliveryPartner> partnerOpt=orderRepository.getPartnerById(partnerId);
-        if(orderOpt.isEmpty()){
-            throw new RuntimeException("Order ID is not present "+orderId);
+    public void addOrderPartnerPair(String orderId, String partnerId) throws RuntimeException {
+        Optional<Order> orderOpt = orderRepository.getOrderById(orderId);
+        Optional<DeliveryPartner> partnerOpt = orderRepository.getPartnerById(partnerId);
+        if (orderOpt.isPresent() && partnerOpt.isPresent()) {
+            DeliveryPartner partner = partnerOpt.get();
+            partner.setNumberOfOrders(partner.getNumberOfOrders() + 1);
+            orderRepository.addPartner(partner);
+            orderRepository.addOrderPartnerPair(orderId, partnerId);
         }
-        if(partnerOpt.isEmpty()){
-            throw new RuntimeException("Partner Id is not present "+partnerId);
-        }
-        DeliveryPartner partner=partnerOpt.get();
-        partner.setNumberOfOrders(partner.getNumberOfOrders()+1);
-        orderRepository.addPartner(partner);
-        orderRepository.addOrderPartnerPair(orderId,partnerId);
     }
 
     public Order getOrderById(String orderId) throws RuntimeException{
@@ -75,14 +71,16 @@ public class OrderService {
 
     public Integer getOrdersLeftAfterGivenTimeByPartnerId(String time, String partnerId) {
         List<String>orderID=orderRepository.getAllOrdersByPartnerId(partnerId);
-        List<Order>orders=new ArrayList<>();
+//        List<Order>orders=new ArrayList<>();
+        int currTime=TimeUtils.convertTime(time);
+        int orderLeft=0;
         for(String id:orderID){
-            Order order=orderRepository.getOrderById(id).get();
-            if(order.getDeliveryTime()>TimeUtils.convertTime(time)){
-                orders.add(order);
+            int deliveryTime=orderRepository.getOrderById(id).get().getDeliveryTime();
+            if(currTime<deliveryTime){
+                orderLeft++;
             }
         }
-        return orders.size();
+        return orderLeft;
     }
 
     public String getLastDeliveryTimeByPartnerId(String partnerId) {
@@ -109,8 +107,15 @@ public class OrderService {
         String partnerId=orderRepository.getPartnerForOrder(orderId);
         orderRepository.deleteOrder(orderId);
         if(Objects.nonNull(partnerId)) {
-            List<String> orderIds = orderRepository.getAllOrdersByPartnerId(partnerId);
-            orderIds.remove(orderId);
-        }
+            DeliveryPartner p=orderRepository.getPartnerById(partnerId).get();
+            Integer initialOrder=p.getNumberOfOrders();
+            initialOrder--;
+            p.setNumberOfOrders(initialOrder);
+            orderRepository.addPartner(p);
+            orderRepository.removeOrderForPartner(partnerId,orderId);
+            }
+
+//            List<String> orderIds = orderRepository.getAllOrdersByPartnerId(partnerId);
+//            orderIds.remove(orderId);
     }
 }

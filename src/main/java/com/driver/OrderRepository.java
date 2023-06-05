@@ -33,10 +33,10 @@ public class OrderRepository {
     }
 
     public void addOrderPartnerPair(String orderId, String partnerId) {
+        orderPartnerMap.put(orderId,partnerId);
         ArrayList<String> orders=partnerOrderMap.getOrDefault(partnerId,new ArrayList<>());
         orders.add(orderId);
         partnerOrderMap.put(partnerId,orders);
-        orderPartnerMap.put(orderId,partnerId);
     }
 
     public List<String> getAllOrdersByPartnerId(String partnerId) {
@@ -66,5 +66,11 @@ public class OrderRepository {
     }
     public String getPartnerForOrder(String orderId) {
         return orderPartnerMap.get(orderId);
+    }
+
+    public void removeOrderForPartner(String partnerId, String orderId) {
+        ArrayList<String> orderIds = partnerOrderMap.get(partnerId);
+        orderIds.remove(orderId);
+        partnerOrderMap.put(partnerId, orderIds);
     }
 }
