@@ -1,24 +1,32 @@
 package com.driver;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TimeUtils {
     private TimeUtils(){
 
     }
     public static int convertTime(String deliveryTime) {
-        String[] time=deliveryTime.split(":");
-        return Integer.parseInt(time[0])*60+Integer.parseInt(time[1]);
+        List<String> list = Arrays.asList(deliveryTime.split(":")); //String[] -> List<String>
+        int HH = Integer.parseInt(list.get(0)); //String "123" -> int 123
+        int MM = Integer.parseInt(list.get(1));
+        return HH * 60 + MM;
     }
-    public static String convertTime(int deliveryTime){
-        int hh=deliveryTime/60;
-        int mm=deliveryTime%60;
-        String HH=String.valueOf(hh);
-        String MM=String.valueOf(mm);
-        if(HH.length()==1){
-            HH='0'+HH;
+    public static String convertTime(int deliveryTime) {
+        //565 in int -> 09:25
+        int HH = deliveryTime/60;
+        int MM = deliveryTime%60;
+        String hh = String.valueOf(HH); //9 //11
+        String mm = String.valueOf(MM); //25 //2
+
+        if(hh.length() == 1) {
+            hh = '0' + hh;
         }
-        if(MM.length()==1){
-            MM='0'+MM;
+        if(mm.length() == 1) {
+            mm = '0' +mm;
         }
-        return String.format("%s:%s"+HH,MM);
+
+        return hh + ":" + mm;
     }
 }
