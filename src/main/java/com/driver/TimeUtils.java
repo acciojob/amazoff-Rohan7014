@@ -13,20 +13,17 @@ public class TimeUtils {
         int MM = Integer.parseInt(list.get(1));
         return HH * 60 + MM;
     }
-    public static String convertTime(int deliveryTime) {
-        //565 in int -> 09:25
-        int HH = deliveryTime/60;
-        int MM = deliveryTime%60;
-        String hh = String.valueOf(HH); //9 //11
-        String mm = String.valueOf(MM); //25 //2
-
-        if(hh.length() == 1) {
-            hh = '0' + hh;
+    public static String convertTime(int deliveryTime){
+        int hh=deliveryTime/60;
+        int mm=deliveryTime%60;
+        String HH=String.valueOf(hh);
+        String MM=String.valueOf(mm);
+        if(HH.length()==1){
+            HH='0'+HH;
         }
-        if(mm.length() == 1) {
-            mm = '0' +mm;
+        if(MM.length()==1){
+            MM='0'+MM;
         }
-
-        return hh + ":" + mm;
+        return String.format("%s:%s"+HH,MM);
     }
 }

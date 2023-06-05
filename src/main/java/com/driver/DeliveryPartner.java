@@ -17,6 +17,7 @@ public class DeliveryPartner {
     public Integer getNumberOfOrders(){
         return numberOfOrders;
     }
+
     public void setNumberOfOrders(Integer numberOfOrders) {
         this.numberOfOrders = numberOfOrders;
     }
