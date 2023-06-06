@@ -1,5 +1,7 @@
 package com.driver;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +11,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderService {
-
-    OrderRepository orderRepository= new OrderRepository();
+@Autowired
+    OrderRepository orderRepository;
 
     public void addOrder(Order order) {
         orderRepository.addOrder(order);
@@ -85,7 +89,7 @@ public class OrderService {
 
     public String getLastDeliveryTimeByPartnerId(String partnerId) {
         List<String> orderIds=orderRepository.getAllOrdersByPartnerId(partnerId);
-        int max=0;
+        int max = 0 ;
         for(String order:orderIds){
             int deliveryTime=orderRepository.getOrderById(order).get().getDeliveryTime();
             if(deliveryTime>max){

@@ -1,10 +1,14 @@
 package com.driver;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderRepository {
     private Map<String,Order> orderMap=new HashMap<>();
     private Map<String,DeliveryPartner> partnerMap=new HashMap<>();
